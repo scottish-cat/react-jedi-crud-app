@@ -1,6 +1,9 @@
 import React from 'react';
+import Button from './Button';
 
-function Table({columns, data, tableDescriptor}) {
+import 'bootstrap/dist/css/bootstrap.css';
+
+function Table({columns, data, tableDescriptor, handleDelete}) {
     return (
         <table className="table table-dark">
             <thead>
@@ -18,6 +21,11 @@ function Table({columns, data, tableDescriptor}) {
                     {columns.map(columnTitle => (
                         <td key={item[columnTitle]+columnTitle}>{item[columnTitle]}</td>
                     ))}
+                    <Button
+                        label="Delete"
+                        classes="btn btn-danger"
+                        onClick={() => handleDelete(item)}
+                    />
                 </tr>
             ))}
             </tbody>

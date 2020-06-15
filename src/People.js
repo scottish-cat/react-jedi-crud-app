@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import Table from "./components/common/Table";
 import Form from './components/common/Form'
 
-// import './App.css';
-import 'bootstrap/dist/css/bootstrap.css';
-
 const data = [
     {first: 'Mark', last: 'Otto', handle: '@motto', id: '1'},
     {first: 'Carl', last: 'Reno', handle: '@ceno', id: '2'},
@@ -13,7 +10,7 @@ const data = [
 
 const columns = Object.keys(data[0]);
 
-function App() {
+function People() {
     const [people, setPeople] = useState(data);
     console.log(people);
 
@@ -22,11 +19,15 @@ function App() {
         setPeople(data)
     }
 
-    const getInitialPeopleData = () => {
+    const getInitialPersonData = () => {
         return columns.reduce((cols, columnName) => {
             cols[columnName] = "";
             return cols;
         }, {})
+    }
+
+    const handleDelete = item => {
+        setPeople(people.filter(person => item !== person));
     }
 
     return (
@@ -35,9 +36,10 @@ function App() {
                 data={people}
                 columns={columns}
                 tableDescriptor="People"
+                handleDelete={handleDelete}
             />
             <Form
-                initialData={getInitialPeopleData()}
+                initialData={getInitialPersonData()}
                 columns={columns}
                 onAddData={handleAppPerson}
             />
@@ -45,4 +47,4 @@ function App() {
     );
 }
 
-export default App;
+export default People;
