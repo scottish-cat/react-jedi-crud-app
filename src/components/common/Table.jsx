@@ -21,11 +21,13 @@ function Table({columns, data, tableDescriptor, handleDelete}) {
                     {columns.map(columnTitle => (
                         <td key={item[columnTitle]+columnTitle}>{item[columnTitle]}</td>
                     ))}
+                    <td>
                     <Button
                         label="Delete"
                         classes="btn btn-danger"
                         onClick={() => handleDelete(item)}
                     />
+                    </td>
                 </tr>
             ))}
             </tbody>

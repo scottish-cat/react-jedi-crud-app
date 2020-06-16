@@ -32,6 +32,7 @@ function Planets() {
 
     return (
         <div className="container">
+            <h2 className="text-dark">Planets from Star Wars Universe</h2>
             <Table
                 data={planets}
                 columns={columns}

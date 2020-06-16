@@ -29,6 +29,7 @@ function Starships() {
 
     return (
         <div className="container">
+            <h2 className="text-dark">Starships from Star Wars Universe</h2>
             <Table
                 data={starships}
                 columns={columns}

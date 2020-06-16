@@ -32,6 +32,7 @@ function People() {
 
     return (
         <div className="container">
+            <h2 className="text-dark">People from Star Wars Universe</h2>
             <Table
                 data={people}
                 columns={columns}
