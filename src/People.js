@@ -8,7 +8,7 @@ const data = [
     {first: 'Steve', last: 'Smith', handle: '@ssteve', id: '3'}
 ]
 
-const columns = Object.keys(data[0]);
+const columns = data.length ? Object.keys(data[0]) : [];
 
 function People() {
     const [people, setPeople] = useState(data);
@@ -33,12 +33,12 @@ function People() {
     return (
         <div className="container">
             <h2 className="text-dark">People from Star Wars Universe</h2>
-            <Table
+            {data.length ? <Table
                 data={people}
                 columns={columns}
                 tableDescriptor="People"
                 handleDelete={handleDelete}
-            />
+            />  : <p className="text-dark">No info about people is available.</p>}
             <Form
                 initialData={getInitialPersonData()}
                 columns={columns}

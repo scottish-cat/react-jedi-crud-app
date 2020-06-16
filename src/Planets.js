@@ -9,7 +9,7 @@ const data = [
     {name: 'Dagobah', climate: 'murky', terrain: 'swamp, jungles', diameter: '8900', population: 'unknown', created: '2014-12-10T11:42', id: '4'}
 ]
 
-const columns = Object.keys(data[0]);
+const columns = data.length ? Object.keys(data[0]) : [];
 
 function Planets() {
     const [planets, setPlanets] = useState(data);
@@ -33,12 +33,12 @@ function Planets() {
     return (
         <div className="container">
             <h2 className="text-dark">Planets from Star Wars Universe</h2>
-            <Table
+            {data.length ? <Table
                 data={planets}
                 columns={columns}
                 tableDescriptor="Planets"
                 handleDelete={handleDelete}
-            />
+            />  : <p className="text-dark">No info about planets is available.</p>}
             <Form
                 initialData={getInitialPlanetData()}
                 columns={columns}
