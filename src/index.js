@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import Planets from './Planets';
 import People from './People';
 import Starships from './Starships';
+import NotFound from './components/common/NotFound';
 import NavBar from './components/common/Navbar';
 
 const navItems = [
@@ -18,10 +19,11 @@ ReactDOM.render(
     <NavBar name='JEDI' items={navItems}/>
     <Router>
        <Switch>
-         <Redirect exact from="/" to="/people"/>
-         <Route exact path="/people" component={People} />
-         <Route exact path="/planets" component={Planets} />
-         <Route exact path="/starships" component={Starships} /> */}
+          <Redirect exact from="/" to="/people"/>
+          <Route exact path="/people" component={People} />
+          <Route exact path="/planets" component={Planets} />
+          <Route exact path="/starships" component={Starships} />
+          <Route component={NotFound} />
        </Switch>
      </Router>
   </React.StrictMode>,
