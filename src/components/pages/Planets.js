@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Table from "./components/common/Table";
-import Form from './components/common/Form'
+import Table from '../common/Table';
+import Form from '../common/Form';
 
 const data = [
     {name: 'Tatooine', climate: 'arid', terrain: 'desert', diameter: '10465', population: '200000', created: '2014-12-09T13:50', id: '1'},
@@ -26,8 +26,8 @@ function Planets() {
         }, {})
     }
 
-    const handleDelete = item => {
-        setPlanets(planets.filter(planet => item !== planet));
+    const handleDelete = id => {
+        setPlanets(planets.filter(planet => planet.id !== id));
     }
 
     return (

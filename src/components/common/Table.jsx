@@ -25,7 +25,7 @@ function Table({columns, data, tableDescriptor, handleDelete}) {
                     <Button
                         label="Delete"
                         classes="btn btn-danger"
-                        onClick={() => handleDelete(item)}
+                        onClick={() => handleDelete(item.id)}
                     />
                     </td>
                 </tr>

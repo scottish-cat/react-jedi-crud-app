@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Table from "./components/common/Table";
-import Form from './components/common/Form'
+import Table from '../common/Table';
+import Form from '../common/Form';
 
 const data = []
 
@@ -21,8 +21,8 @@ function Starships() {
         }, {})
     }
 
-    const handleDelete = item => {
-        setStarships(starships.filter(starship => item !== starship));
+    const handleDelete = id => {
+        setStarships(starships.filter(starship => starship.id !== id));
     }
 
     return (
