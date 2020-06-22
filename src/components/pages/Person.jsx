@@ -29,12 +29,14 @@ function Person() {
 
     const handleAppPerson = (personData) => {
         if (id !== 'new') {
-            people = people.filter(planet => planet.id !== personData.id);
+            const personIndex = people.findIndex(person => +person.id === +personData.id);
+            people[personIndex] = {...people[personIndex], ...personData};
         } else {
             personData.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+            people = [...people, personData];
         }
 
-        localStorage.setItem('people', JSON.stringify([...people, personData]))
+        localStorage.setItem('people', JSON.stringify(people));
         history.goBack();
     }
 

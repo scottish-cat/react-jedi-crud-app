@@ -29,12 +29,14 @@ function Planet() {
 
     const handleAddPlanet = (planetData) => {
         if (id !== 'new') {
-            planets = planets.filter(planet => planet.id !== planetData.id);
+            const planetIndex = planets.findIndex(planet => +planet.id === +planetData.id);
+            planets[planetIndex] = {...planets[planetIndex], ...planetData};
         } else {
             planetData.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+            planets = [...planets, planetData];
         }
 
-        localStorage.setItem('planets', JSON.stringify([...planets, planetData]))
+        localStorage.setItem('planets', JSON.stringify(planets));
         history.goBack();
     }
 

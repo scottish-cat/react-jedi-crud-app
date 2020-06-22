@@ -29,12 +29,14 @@ function Starship() {
 
     const handleAddStarship = (starshipData) => {
         if (id !== 'new') {
-            starships = starships.filter(starship => starship.id !== starshipData.id);
+            const starshipIndex = starships.findIndex(starship => +starship.id === +starshipData.id);
+            starships[starshipIndex] = {...starships[starshipIndex], ...starshipData};
         } else {
             starshipData.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+            starships = [...starships, starshipData];
         }
 
-        localStorage.setItem('starships', JSON.stringify([...starships, starshipData]))
+        localStorage.setItem('starships', JSON.stringify(starships));
         history.goBack();
     }
 
