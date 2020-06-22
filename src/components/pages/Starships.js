@@ -7,11 +7,16 @@ const data = []
 const columns = data.length ? Object.keys(data[0]) : [];
 
 function Starships() {
-    const [starships, setStarships] = useState(data);
+    if (!localStorage.getItem('starships')) {
+        localStorage.setItem('starships', JSON.stringify(data));
+    } 
+
+    const [starships, setStarships] = useState(JSON.parse(localStorage.getItem('planets')));
 
     const handleStarship = (starshipData) => {
         const data = [...starships, starshipData];
-        setStarships(data)
+        setStarships(data);
+        localStorage.setItem('starships', JSON.stringify(data));
     }
 
     const getInitialStarshipData = () => {
@@ -22,7 +27,9 @@ function Starships() {
     }
 
     const handleDelete = id => {
-        setStarships(starships.filter(starship => starship.id !== id));
+        const data = starships.filter(starship => starship.id !== id); 
+        setStarships(data);
+        localStorage.setItem('starships', JSON.stringify(data));
     }
 
     return (

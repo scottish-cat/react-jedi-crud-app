@@ -12,11 +12,16 @@ const data = [
 const columns = data.length ? Object.keys(data[0]) : [];
 
 function Planets() {
-    const [planets, setPlanets] = useState(data);
+    if (!localStorage.getItem('planets')) {
+        localStorage.setItem('planets', JSON.stringify(data));
+    } 
+
+    const [planets, setPlanets] = useState(JSON.parse(localStorage.getItem('planets')));
 
     const handlePlanet = (planetData) => {
         const data = [...planets, planetData];
-        setPlanets(data)
+        setPlanets(data);
+        localStorage.setItem('planets', JSON.stringify(data));
     }
 
     const getInitialPlanetData = () => {
@@ -27,7 +32,9 @@ function Planets() {
     }
 
     const handleDelete = id => {
-        setPlanets(planets.filter(planet => planet.id !== id));
+        const data = planets.filter(planet => planet.id !== id);
+        setPlanets(data);
+        localStorage.setItem('planets', JSON.stringify(data));
     }
 
     return (

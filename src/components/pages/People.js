@@ -11,12 +11,16 @@ const data = [
 const columns = data.length ? Object.keys(data[0]) : [];
 
 function People() {
-    const [people, setPeople] = useState(data);
-    console.log(people);
+    if (!localStorage.getItem('people')) {
+        localStorage.setItem('people', JSON.stringify(data));
+    } 
+    
+    const [people, setPeople] = useState(JSON.parse(localStorage.getItem('people')));
 
     const handleAppPerson = (personData) => {
         const data = [...people, personData];
-        setPeople(data)
+        setPeople(data);
+        localStorage.setItem('people', JSON.stringify(data))
     }
 
     const getInitialPersonData = () => {
@@ -27,7 +31,9 @@ function People() {
     }
 
     const handleDelete = id => {
-        setPeople(people.filter(person => person.id !== id));
+        const data = people.filter(person => person.id !== id);
+        setPeople(data);
+        localStorage.setItem('people', JSON.stringify(data));
     }
 
     return (
