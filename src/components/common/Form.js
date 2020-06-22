@@ -14,19 +14,17 @@ const Form = ({columns, initialData, onAddData}) => {
         const { currentTarget : input } = event;
         const data = {...personData};
         data[input.name.replace(/\s+/g, '_')] = input.value;
-        data.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
         setPersonData(data)
     }
 
-
     return (
-        <form className={Object.keys(personData).length ? 'd-block' : 'd-none'}>
+        <form>
             {columns.map( columnName => (
                 <Input
                 key={columnName}
                 name={columnName}
                 label={columnName}
-                value={personData[columnName]}
+                value={personData[columnName.replace(/\s+/g, '_')]}
                 type="input"
                 onChange={handleChange}
                 />

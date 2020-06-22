@@ -5,7 +5,7 @@ import Form from '../common/Form';
 function Planet() {
     const { id } = useParams();
     const history = useHistory();
-    const planets = JSON.parse(localStorage.getItem('planets'));
+    let planets = JSON.parse(localStorage.getItem('planets'));
 
     const getKeysNames = () => {
         return planets.length ? Object.keys(planets[0]).filter(key => key !== 'id').map(key => key.replace(/_/g, ' ')) : [];
@@ -14,7 +14,7 @@ function Planet() {
     const planetData = () => {
         let planet;
         if (id !== 'new') {
-            planet = planets.filter(planet => planet.id === id)[0];
+            planet = planets.filter(planet => +planet.id === +id)[0];
         } else {
             planet = getKeysNames().reduce((cols, columnName) => {
                 cols[columnName.replace(/\s+/g, '_')] = "";
@@ -26,9 +26,13 @@ function Planet() {
     }
 
     const handleAddPlanet = (planetData) => {
-        const data = [...planets, planetData];
-        localStorage.setItem('planets', JSON.stringify(data))
+        if (id !== 'new') {
+            planets = planets.filter(planet => planet.id !== planetData.id);
+        } else {
+            planetData.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+        }
 
+        localStorage.setItem('planets', JSON.stringify([...planets, planetData]))
         history.goBack();
     }
 
@@ -36,7 +40,7 @@ function Planet() {
         <div className="container">
             <h2 className="text-dark">Add new planet to Star Wars Universe</h2>
             <Form
-                initialData={planetData}
+                initialData={planetData()}
                 columns={getKeysNames()}
                 onAddData={handleAddPlanet}
             />
