@@ -2,6 +2,8 @@ import React from 'react';
 import { useHistory, useParams } from "react-router-dom";
 import Form from '../common/Form';
 
+import Joi from '@hapi/joi';
+
 function Starship() {
     const { id } = useParams();
     const history = useHistory();
@@ -36,6 +38,31 @@ function Starship() {
         history.goBack();
     }
 
+    const validationScheme = () => {
+        return {
+            name: Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        
+            model: Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+            
+            crew: Joi.number()
+                .required(),
+        
+            passengers: Joi.string()
+                .required(),
+        
+            cost_in_credits: Joi.string()
+                .required(),
+            
+            id: Joi.number()
+        }
+    }
+
     return (
         <div className="container">
             <h2 className="text-dark">Add new starship to Star Wars Universe</h2>
@@ -43,6 +70,7 @@ function Starship() {
                 initialData={starshipData()}
                 columns={getKeysNames()}
                 onAddData={handleAddStarship}
+                schema={validationScheme()}
             />
         </div>
     );

@@ -1,7 +1,8 @@
 import React from 'react';
-import Joi from '@hapi/joi';
 import { useHistory, useParams } from "react-router-dom";
 import Form from '../common/Form';
+
+import Joi from '@hapi/joi';
 
 function Person() {
     const { id } = useParams();
@@ -37,7 +38,7 @@ function Person() {
         history.goBack();
     }
 
-    const validScheme = () => {
+    const validationScheme = () => {
         return {
             name: Joi.string()
                 .min(3)
@@ -70,7 +71,7 @@ function Person() {
                 initialData={personData()}
                 columns={getKeysNames()}
                 onAddData={handleAppPerson}
-                schema={validScheme()}
+                schema={validationScheme()}
             />
         </div>
     );

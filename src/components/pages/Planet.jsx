@@ -2,6 +2,8 @@ import React from 'react';
 import { useHistory, useParams } from "react-router-dom";
 import Form from '../common/Form';
 
+import Joi from '@hapi/joi';
+
 function Planet() {
     const { id } = useParams();
     const history = useHistory();
@@ -36,6 +38,35 @@ function Planet() {
         history.goBack();
     }
 
+    const validationScheme = () => {
+        return {
+            name: Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        
+            climate: Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+            
+            terrain: Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        
+            diameter: Joi.number()
+                .integer()
+                .required(),
+        
+            population: Joi.number()
+                .integer() 
+                .required(),
+            
+            id: Joi.number()
+        }
+    }
+
     return (
         <div className="container">
             <h2 className="text-dark">Add new planet to Star Wars Universe</h2>
@@ -43,6 +74,7 @@ function Planet() {
                 initialData={planetData()}
                 columns={getKeysNames()}
                 onAddData={handleAddPlanet}
+                schema={validationScheme()}
             />
         </div>
     );
