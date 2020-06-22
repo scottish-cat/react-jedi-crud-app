@@ -19,7 +19,7 @@ function Table({columns, data, tableDescriptor, handleDelete}) {
                 <tr key={item.id}>
                     <th scope="row">{++index}</th>
                     {columns.map(columnTitle => (
-                        <td key={item[columnTitle]+columnTitle}>{item[columnTitle]}</td>
+                        <td key={item[columnTitle]+columnTitle}>{item[columnTitle.replace(/\s/g, '_')]}</td>
                     ))}
                     <td>
                     <Button

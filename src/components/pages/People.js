@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from  '../common/Table';
 import Form from '../common/Form';
+import { getPeople } from "../../services/swApiService";
 
-const data = [
-    {first: 'Mark', last: 'Otto', handle: '@motto', id: '1'},
-    {first: 'Carl', last: 'Reno', handle: '@ceno', id: '2'},
-    {first: 'Steve', last: 'Smith', handle: '@ssteve', id: '3'}
-]
-
-const columns = data.length ? Object.keys(data[0]) : [];
+const noDataMessage = 'No info about people is available.';
 
 function People() {
-    if (!localStorage.getItem('people')) {
-        localStorage.setItem('people', JSON.stringify(data));
-    } 
-    
-    const [people, setPeople] = useState(JSON.parse(localStorage.getItem('people')));
+    const initialData = JSON.parse(localStorage.getItem('people')); 
+    const [people, setPeople] = useState(initialData ? initialData : []);
+    const [textMessage, setTextMessage] = useState('Loading data...');
+
+    useEffect( () => {
+        const getData = async () => {
+            const data = await getPeople()
+            setPeople(data);
+            localStorage.setItem('people', JSON.stringify(data));
+            setTextMessage(noDataMessage);
+        }
+
+        if (!localStorage.getItem('people')) {
+            getData();
+        } 
+    }, [])
 
     const handleAppPerson = (personData) => {
         const data = [...people, personData];
@@ -24,8 +30,8 @@ function People() {
     }
 
     const getInitialPersonData = () => {
-        return columns.reduce((cols, columnName) => {
-            cols[columnName] = "";
+        return getColumnNames().reduce((cols, columnName) => {
+            cols[columnName.replace(/\s+/g, '_')] = "";
             return cols;
         }, {})
     }
@@ -36,18 +42,22 @@ function People() {
         localStorage.setItem('people', JSON.stringify(data));
     }
 
+    const getColumnNames = () => {
+        return people.length ? Object.keys(people[0]).filter(key => key !== 'id').map(key => key.replace(/_/g, ' ')) : [];
+    }
+
     return (
         <div className="container">
             <h2 className="text-dark">People from Star Wars Universe</h2>
-            {data.length ? <Table
+            {people.length ? <Table
                 data={people}
-                columns={columns}
+                columns={getColumnNames()}
                 tableDescriptor="People"
                 handleDelete={handleDelete}
-            />  : <p className="text-dark">No info about people is available.</p>}
+            />  : <p className="text-dark">{textMessage}</p>}
             <Form
                 initialData={getInitialPersonData()}
-                columns={columns}
+                columns={getColumnNames()}
                 onAddData={handleAppPerson}
             />
         </div>

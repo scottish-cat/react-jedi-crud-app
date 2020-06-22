@@ -13,7 +13,8 @@ const Form = ({columns, initialData, onAddData}) => {
     const handleChange = (event) => {
         const { currentTarget : input } = event;
         const data = {...personData};
-        data[input.name] = input.value;
+        data[input.name.replace(/\s+/g, '_')] = input.value;
+        data.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
         setPersonData(data)
     }
 

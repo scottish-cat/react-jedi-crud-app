@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '../common/Table';
 import Form from '../common/Form';
+import { getPlanets } from "../../services/swApiService";
 
-const data = [
-    {name: 'Tatooine', climate: 'arid', terrain: 'desert', diameter: '10465', population: '200000', created: '2014-12-09T13:50', id: '1'},
-    {name: 'Alderaan', climate: 'temperate', terrain: 'grasslands, mountains', diameter: '12500', population: '2000000000', created: '2014-12-10T11:35', id: '2'},
-    {name: 'Yavin IV', climate: 'temperate, tropical', terrain: 'jungle, rainforests', diameter: '10200', population: '1000', created: '2014-12-10T11:39', id: '3'},
-    {name: 'Dagobah', climate: 'murky', terrain: 'swamp, jungles', diameter: '8900', population: 'unknown', created: '2014-12-10T11:42', id: '4'}
-]
-
-const columns = data.length ? Object.keys(data[0]) : [];
+const noDataMessage = 'No info about planets is available.';
 
 function Planets() {
-    if (!localStorage.getItem('planets')) {
-        localStorage.setItem('planets', JSON.stringify(data));
-    } 
+    const initialData = JSON.parse(localStorage.getItem('planets')); 
+    const [planets, setPlanets] = useState(initialData ? initialData : []);
+    const [textMessage, setTextMessage] = useState('Loading data...');
 
-    const [planets, setPlanets] = useState(JSON.parse(localStorage.getItem('planets')));
+    useEffect( () => {
+        const getData = async () => {
+            const data = await getPlanets()
+            setPlanets(data);
+            localStorage.setItem('planets', JSON.stringify(data));
+            setTextMessage(noDataMessage);
+        }
+
+        if (!localStorage.getItem('planets')) {
+            getData();
+        } 
+    }, [])
 
     const handlePlanet = (planetData) => {
         const data = [...planets, planetData];
@@ -25,7 +30,7 @@ function Planets() {
     }
 
     const getInitialPlanetData = () => {
-        return columns.reduce((cols, columnName) => {
+        return getColumnNames().reduce((cols, columnName) => {
             cols[columnName] = "";
             return cols;
         }, {})
@@ -37,18 +42,22 @@ function Planets() {
         localStorage.setItem('planets', JSON.stringify(data));
     }
 
+    const getColumnNames = () => {
+        return planets.length ? Object.keys(planets[0]).filter(key => key !== 'id').map(key => key.replace(/_/g, ' ')) : [];
+    }
+
     return (
         <div className="container">
             <h2 className="text-dark">Planets from Star Wars Universe</h2>
-            {data.length ? <Table
+            {planets.length ? <Table
                 data={planets}
-                columns={columns}
+                columns={getColumnNames()}
                 tableDescriptor="Planets"
                 handleDelete={handleDelete}
-            />  : <p className="text-dark">No info about planets is available.</p>}
+            />  : <p className="text-dark">{textMessage}</p>}
             <Form
                 initialData={getInitialPlanetData()}
-                columns={columns}
+                columns={getColumnNames()}
                 onAddData={handlePlanet}
             />
         </div>
