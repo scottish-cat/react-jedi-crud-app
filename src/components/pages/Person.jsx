@@ -1,4 +1,5 @@
 import React from 'react';
+import Joi from '@hapi/joi';
 import { useHistory, useParams } from "react-router-dom";
 import Form from '../common/Form';
 
@@ -36,6 +37,32 @@ function Person() {
         history.goBack();
     }
 
+    const validScheme = () => {
+        return {
+            name: Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        
+            height: Joi.number()
+                .required()
+                .integer(),
+            
+            mass: Joi.number()
+                .integer()
+                .required(),
+        
+            gender: Joi.string()
+                .required(),
+        
+            birth_year: Joi.number()
+                .integer() 
+                .required(),
+            
+            id: Joi.number()
+        }
+    }
+
     return (
         <div className="container">
             <h2 className="text-dark">Add new person to Star Wars Universe</h2>
@@ -43,6 +70,7 @@ function Person() {
                 initialData={personData()}
                 columns={getKeysNames()}
                 onAddData={handleAppPerson}
+                schema={validScheme()}
             />
         </div>
     );
